@@ -1,6 +1,6 @@
-#ERP Example SQL
+# ERP Example SQL
 
-###Install
+### Install
 * Install Node 14 or high
 * Install MySQL 8.0.21 or high
 * get repository
@@ -24,7 +24,7 @@ DB_DATABASE=erp_example_sql
 npm i
 npm run migrate up
 ```
-###Run
+### Run
 * run with nolog flag
 ```
 npm run dev_nolog
