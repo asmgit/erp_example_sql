@@ -1,0 +1,34 @@
+{
+  "name": "erp-example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "tap test/**/*.test.js",
+    "start": "fastify start -l info app.js",
+    "dev": "fastify start -w -l info -P app.js",
+    "dev_nolog": "fastify start -w -P app.js",
+    "migrate": "node cli/migrate"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@verycrazydog/mysql-parser": "^1.2.0",
+    "autocannon": "^6.5.0",
+    "fastify": "^3.3.0",
+    "fastify-autoload": "^3.0.9",
+    "fastify-cli": "^2.2.0",
+    "fastify-formbody": "^5.0.0",
+    "fastify-plugin": "^2.3.3",
+    "moment": "^2.27.0",
+    "mysql2": "^2.1.0",
+    "require-sql": "^1.0.0"
+  },
+  "devDependencies": {
+    "tap": "^14.10.8"
+  }
+}
