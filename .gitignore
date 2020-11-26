@@ -62,3 +62,5 @@ profile*
 dist
 
 package-lock.json
+
+/docker/mysql/data_files/*

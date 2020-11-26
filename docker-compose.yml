@@ -1,0 +1,30 @@
+﻿version: '2'
+
+services:
+    mysql:
+        image: mysql:latest
+        container_name: mysql
+        ports:
+            - "3306:3306"
+        volumes:
+            - ./docker/mysql/data_files:/var/lib/mysql
+            - ./docker/mysql/logs:/var/log/mysql
+            - ./docker/mysql/mysql-files:/var/lib/mysql-files
+            - ./docker/mysql/my.cnf:/etc/mysql/my.cnf
+        environment:
+            MYSQL_ROOT_PASSWORD: secret
+        security_opt:
+            - seccomp:unconfined
+    node:
+        build: ./docker/node
+        working_dir: /home/node
+        container_name: node
+        environment:
+            - NODE_ENV=developer
+        volumes:
+            - .:/home/node
+        ports:
+            - "3030:3030"
+        command: bash -c "concurrently
+            \"bash\"
+            "

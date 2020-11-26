@@ -17,15 +17,26 @@ const db_config = {
 
 module.exports.db_config = db_config;
 
+let register_db_vars = async (db, vars) => {
+    for (let var_name in vars) {
+        let val = vars[var_name];
+        if (!['number', 'string', 'boolean'].includes(typeof val) && val !== null) {
+            val = JSON.stringify(val);
+        }
+        await db.query("SET @`req_" + var_name.replace(/[^a-zA-Z0-9_-]/g, '') + "` = :val", {val});
+    }
+};
+
 module.exports.default = fp(async fastify => {
     let db_pool = await mysql.createPool(db_config);
     console.log('Connection pool created');
-    //fastify.decorate('db_pool', db_pool);
-    //let db;
-    //fastify.decorate('db', db);
+
+    fastify.decorate('db_pool', db_pool);
+    fastify.decorate('register_db_vars', register_db_vars);
 
     fastify.addHook('preHandler', async (req) => {
         req.db = await db_pool.getConnection();
+        await register_db_vars(req.db, req.params);
         await req.db.beginTransaction();
         return;
     });
@@ -37,11 +48,12 @@ module.exports.default = fp(async fastify => {
     });
 
     fastify.setErrorHandler(async (err, req, res) => {
+        //console.error(err);
         await req.db.rollback();
         req.db.release();
-        //console.error(err);
         try {
             // TODO mysql exception catcher
+
             // Error number: 1644; Symbol: ER_SIGNAL_EXCEPTION; SQLSTATE: HY000
             // Message: Unhandled user-defined exception condition
             if (err.errno == 1644) {

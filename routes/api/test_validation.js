@@ -63,7 +63,7 @@ module.exports = async function (fastify, opts) {
         //need_error = 1;
         //need_error = 0;
         let data = generate_data(need_error);
-        let [ret] = await req.db.query(`
+        let [ret] = await req.db.execute(`
             INSERT INTO data_for_validation (name, login, email, password, agreed, date, ipv4, guid)
             VALUES (:name, :login, :email, :password, :agreed, :date, :ipv4, :guid)
         `, data);
